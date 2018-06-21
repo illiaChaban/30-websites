@@ -10,6 +10,7 @@
 </head>
 <body>
     <form method="post">
+        <div class='reg-form-title'>Register form</div>
         <div id='fname-div'>
             <label for='fname'>First Name:</label>
             <input type='text' id='fname' autocomplete="given-name"/>
@@ -19,13 +20,13 @@
             <input type='text' id='lname' autocomplete="family-name"/>
         </div>
         <div id='username-div'>
-            <label for='username'>Username: *</label>
+            <label for='username'>Username: <span class="red small-font">*</span></label>
             <input type='text' id='username' autocomplete="username"/>
             <i class="fas fa-times-circle display-inline wrong"></i>
             <i class="fas fa-check-circle display-none correct"></i>
         </div>
         <div id='email-div'>
-            <label for='email'>Email: *</label>
+            <label for='email'>Email: <span class="red small-font">*</span></label>
             <input type='email' id='email'/>
             <i class="fas fa-times-circle display-inline wrong"></i>
             <i class="fas fa-check-circle display-none correct"></i>
@@ -34,7 +35,7 @@
             </div>
         </div>
         <div id='password-div'>
-            <label for='password'>Password: *</label>
+            <label for='password'>Password: <span class="red small-font">*</span></label>
             <input type='password' id='password'/>
             <div class='warning' id='password-weakness'>
                 <ul>
@@ -47,10 +48,16 @@
                         <li>Non-alphanumeric (for example: !, $, # or %)</li>
                     </ul>
                 </ul>
+                <span style="margin-left: 10px;">Strength:</span>
+                <div class='progress-bar'>
+                    <span style="width: 0%"></span>
+                </div>
             </div>
+            <i class="fas fa-times-circle display-inline wrong"></i>
+            <i class="fas fa-check-circle display-none correct"></i>
         </div>
         <div id='retype-div'>
-            <label for='retype-passw'>Retype password: *</label>
+            <label for='retype-passw'>Retype password: <span class="red small-font">*</span></label>
             <input type='password' id='retype-passw'/>
             <i class="fas fa-times-circle display-inline wrong"></i>
             <i class="fas fa-check-circle display-none correct"></i>
@@ -63,8 +70,11 @@
             <!-- <input type="button" name="hello" id='btn'/> -->
             <button type='button' id='submit'>Submit</button>
         </div>
-
+        <div>
+            <span class='small-font'>(<span class="red small-font">*</span>) = required</span>
+        </div>
     </form>
+
     <script src='lib.js'></script>
     <script src="main.js"></script>
     

@@ -13,7 +13,7 @@ form {
     box-sizing: content-box;
     border: 1px solid rgb(18, 29, 18);
     border-radius: 1em;
-    box-shadow: 3px 5px rgba(161, 253, 161, 0.4);
+    box-shadow: 0px 0px 0 8px rgba(161, 253, 161, 0.4);
     padding: 10px;
     width: 400px;
     height: 30%;
@@ -48,11 +48,11 @@ form > div {
 
 
 .warning {
-    display: none;
+    display: inline;  /*none*/
     margin-left: 5px;
     border: 1px solid black;
     border-radius: 7px;
-    width: 200px;
+    width: 300px;
     position: absolute;
 }
 
@@ -62,4 +62,41 @@ div > .display-none {
 
 div > .display-inline {
     display: inline;
+}
+
+.red {
+    color: rgb(224, 0, 0);
+}
+
+.small-font {
+    font-size: 0.8em;
+}
+
+.reg-form-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 7px;
+    text-align: center;
+}
+
+.progress-bar {
+    height: 10px;
+    position: relative;
+    background: #555;
+    border-radius: 10px;
+    margin: 0 5px 5px 5px;
+	padding: 2px;
+}
+
+.progress-bar > span {
+    display: block;
+    height: 100%;
+    border-radius: 5px;
+    background-color: rgb(43,194,83);
+    box-shadow: 
+        inset 0 2px 9px  rgba(255,255,255,0.3),
+        inset 0 -2px 6px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+
 }
