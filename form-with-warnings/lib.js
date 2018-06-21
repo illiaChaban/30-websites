@@ -4,7 +4,7 @@ let stateAllTrue = (state) => {
     for ( let x in state) {
         if ( !state[x] ) allTrue = false;
     }
-    console.log(allTrue)
+    // console.log(allTrue)
     return allTrue;
 }
 

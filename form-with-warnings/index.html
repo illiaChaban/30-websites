@@ -22,14 +22,14 @@
         <div id='username-div'>
             <label for='username'>Username: <span class="red small-font">*</span></label>
             <input type='text' id='username' autocomplete="username"/>
-            <i class="fas fa-times-circle display-inline wrong"></i>
-            <i class="fas fa-check-circle display-none correct"></i>
+            <i class="fas fa-times-circle display-inline wrong red"></i>
+            <i class="fas fa-check-circle display-none correct green"></i>
         </div>
         <div id='email-div'>
             <label for='email'>Email: <span class="red small-font">*</span></label>
             <input type='email' id='email'/>
-            <i class="fas fa-times-circle display-inline wrong"></i>
-            <i class="fas fa-check-circle display-none correct"></i>
+            <i class="fas fa-times-circle display-inline wrong red"></i>
+            <i class="fas fa-check-circle display-none correct green"></i>
             <!-- <div class='warning' id='email-warning'> -->
 
             </div>
@@ -39,13 +39,13 @@
             <input type='password' id='password'/>
             <div class='warning' id='password-weakness'>
                 <ul>
-                    <li>Must be between 4 and 10 characters long</li>
+                    <li id='characters-long'>Must be between 4 and 10 characters long <i class="fas fa-check-circle display-none correct green small-font"></i></li>
                     <li>Must contain such characters:</li>
                     <ul>
-                        <li>English uppercase characters (A-Z)</li>
-                        <li>English lowercase characters (a-z)</li>
-                        <li>Base-10 numeric digits (0-9)</li>
-                        <li>Non-alphanumeric (for example: !, $, # or %)</li>
+                        <li id='uppercase'>English uppercase characters (A-Z) <i class="fas fa-check-circle display-none correct green small-font"></i></li>
+                        <li id='lowercase'>English lowercase characters (a-z) <i class="fas fa-check-circle display-none correct green small-font"></i></li>
+                        <li id='digits'>Base-10 numeric digits (0-9) <i class="fas fa-check-circle display-none correct green small-font"></i></li>
+                        <li id='non-alpha'>Non-alphanumeric (for example: !, $, # or %) <i class="fas fa-check-circle display-none correct green small-font"></i></li>
                     </ul>
                 </ul>
                 <span style="margin-left: 10px;">Strength:</span>
@@ -53,14 +53,14 @@
                     <span style="width: 0%"></span>
                 </div>
             </div>
-            <i class="fas fa-times-circle display-inline wrong"></i>
-            <i class="fas fa-check-circle display-none correct"></i>
+            <i class="fas fa-times-circle display-inline wrong red"></i>
+            <i class="fas fa-check-circle display-none correct green"></i>
         </div>
         <div id='retype-div'>
             <label for='retype-passw'>Retype password: <span class="red small-font">*</span></label>
             <input type='password' id='retype-passw'/>
-            <i class="fas fa-times-circle display-inline wrong"></i>
-            <i class="fas fa-check-circle display-none correct"></i>
+            <i class="fas fa-times-circle display-inline wrong red"></i>
+            <i class="fas fa-check-circle display-none correct green"></i>
         </div>
         <div id='avatar-div'>
             <label for='avatar'>Avatar:</label>
@@ -69,6 +69,7 @@
         <div>
             <!-- <input type="button" name="hello" id='btn'/> -->
             <button type='button' id='submit'>Submit</button>
+            <span class='red small-font display-none'>Check your inputs!</span>
         </div>
         <div>
             <span class='small-font'>(<span class="red small-font">*</span>) = required</span>

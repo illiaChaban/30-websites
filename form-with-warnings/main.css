@@ -40,15 +40,19 @@ form > div {
 }
 
 #submit {
-    /* text-align: left; */
-    /* float: left; */
-    /* align-self: flex-end; */
-    /* border: 3px solid black; */
+    margin-top: 10px;
+    position: relative;
+    left: 247px;
+    font-size: 0.9em;
 }
 
+input {
+    width: 170px;
+}
 
 .warning {
-    display: inline;  /*none*/
+    display: none;  /*none*/
+    background-color: white;
     margin-left: 5px;
     border: 1px solid black;
     border-radius: 7px;
@@ -56,7 +60,7 @@ form > div {
     position: absolute;
 }
 
-div > .display-none {
+div > .display-none, li > .display-none {
     display: none;
 }
 
@@ -64,8 +68,13 @@ div > .display-inline {
     display: inline;
 }
 
+
 .red {
     color: rgb(224, 0, 0);
+}
+
+.green {
+    color: rgb(27, 235, 0);
 }
 
 .small-font {

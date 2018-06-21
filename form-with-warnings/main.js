@@ -6,7 +6,7 @@ const password = document.getElementById('password')
 const passwordWeakness = document.getElementById('password-weakness');
 const retypePassword = document.getElementById('retype-passw');
 const avatar = document.getElementById('avatar');
-const progressBar = document.getElementsByClassName('progress-bar')[0].getElementsByTagName('span')[0];
+const progressBar = document.querySelector('.progress-bar > span');
 
 
 const submitBtn = document.getElementById('submit')
@@ -18,11 +18,8 @@ let state = {
     retypePasswordMatch: false,
 }
 
-
-
-
-const usernameCorrect = document.getElementById('username-div').getElementsByClassName('correct')[0];
-const usernameWrong = document.getElementById('username-div').getElementsByClassName('wrong')[0];
+const usernameCorrect = document.querySelector('#username-div > .correct');
+const usernameWrong = document.querySelector('#username-div > .wrong');
 username.addEventListener('input', (e) => {
     let text = e.target.value;
     if (text) {
@@ -37,24 +34,24 @@ username.addEventListener('input', (e) => {
 })
 
 const emailVerifier = /(@)(.+)$/;
-const emailCorrect = document.getElementById('email-div').getElementsByClassName('correct')[0];
-const emailWrong = document.getElementById('email-div').getElementsByClassName('wrong')[0];
+const emailCorrect = document.querySelector('#email-div > .correct');
+const emailWrong = document.querySelector('#email-div > .wrong');
 email.addEventListener('input', (e) => { 
     let text = e.target.value;
     if (text.match(emailVerifier)) {
         emailCorrect.style.display = 'inline';
-        emailWrong.style.display = 'none'
+        emailWrong.style.display = 'none';
         state.correctEmail = true;
     } else {
         emailCorrect.style.display = 'none';
-        emailWrong.style.display = 'inline'
+        emailWrong.style.display = 'inline';
         state.correctEmail = false;
     }
 })
 
 
-const passwordStrong = document.getElementById('password-div').getElementsByClassName('correct')[0];
-const passwordWeak = document.getElementById('password-div').getElementsByClassName('wrong')[0];
+const passwordStrong = document.querySelector('#password-div > .correct');
+const passwordWeak = document.querySelector('#password-div > .wrong');
 password.addEventListener('focus', () => {
     if (! state.strongPassword ) {
         passwordWeakness.style.display = 'inline';
@@ -70,11 +67,70 @@ password.addEventListener('blur', () => {
     }
 })
 
+getProgress = () => {
+    const long = document.querySelector('#characters-long');
+    const uppercase = document.querySelector('#uppercase');
+    const lowercase = document.querySelector('#lowercase');
+    const digits = document.querySelector('#digits');
+    const nonAlpha = document.querySelector('#non-alpha');
 
-password.addEventListener('input', (e) => {
-    let text = e.target.value;
-    let strong = text;
-    if (strong) {
+    let p = password.value
+    let passwInRange = p.length >= 4 && p.length <= 10;
+    let hasUppercase = (/[A-Z]/).test(p);
+    let hasLowercase = (/[a-z]/).test(p);
+    let hasDigits = (/[0-9]/).test(p);
+    let hasNonAlpha = (/[^a-zA-Z\d\s:]/).test(p);
+
+    let progress = 0;
+    if ( passwInRange ) {
+        progress += 20;
+        long.setAttribute('class', 'green');
+        long.querySelector('.correct').style.display = 'inline';
+    } else {
+        long.setAttribute('class', '');
+        long.querySelector('.correct').style.display = 'none';
+    }
+    if ( hasUppercase ) {
+        progress += 20;
+        uppercase.setAttribute('class', 'green');
+        uppercase.querySelector('.correct').style.display = 'inline';
+    } else {
+        uppercase.setAttribute('class', '');
+        uppercase.querySelector('.correct').style.display = 'none';
+    }
+    if ( hasLowercase ) {
+        progress += 20;
+        lowercase.setAttribute('class', 'green');
+        lowercase.querySelector('.correct').style.display = 'inline';
+    } else {
+        lowercase.setAttribute('class', '');
+        lowercase.querySelector('.correct').style.display = 'none';
+    }
+    if ( hasDigits ) {
+        progress += 20;
+        digits.setAttribute('class', 'green');
+        digits.querySelector('.correct').style.display = 'inline';
+    } else {
+        digits.setAttribute('class', '');
+        digits.querySelector('.correct').style.display = 'none';
+    }
+    if ( hasNonAlpha ) {
+        progress += 20;
+        nonAlpha.setAttribute('class', 'green');
+        nonAlpha.querySelector('.correct').style.display = 'inline';
+    } else {
+        nonAlpha.setAttribute('class', '');
+        nonAlpha.querySelector('.correct').style.display = 'none';
+    }
+
+    progressBar.style.width = `${progress}%`;
+
+    return progress;
+}
+
+password.addEventListener('input', () => {
+    let progress = getProgress();
+    if (progress === 100) {
         passwordWeakness.style.display = 'none';
         passwordStrong.style.display = 'inline';
         state.strongPassword = true;
@@ -86,8 +142,8 @@ password.addEventListener('input', (e) => {
 })
 
 
-const retypeMatch = document.getElementById('retype-div').getElementsByClassName('correct')[0];
-const retypeDontMatch = document.getElementById('retype-div').getElementsByClassName('wrong')[0];
+const retypeMatch = document.querySelector('#retype-div > .correct');
+const retypeDontMatch = document.querySelector('#retype-div > .wrong');
 retypePassword.addEventListener('input', () => {
     let match = password.value === retypePassword.value;
     if (match) {
@@ -114,7 +170,9 @@ submitBtn.addEventListener('click', () => {
                 avatar: avatar.value,
             }
         )
-        // window.location.href='submitted.html'
+        window.location.href='submitted.html'
+    } else {
+        document.querySelector('#submit + span').style.display = 'inline';
     }
 })
 
