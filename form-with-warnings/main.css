@@ -1,0 +1,65 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
+form {
+    position: absolute;
+    box-sizing: content-box;
+    border: 1px solid rgb(18, 29, 18);
+    border-radius: 1em;
+    box-shadow: 3px 5px rgba(161, 253, 161, 0.4);
+    padding: 10px;
+    width: 400px;
+    height: 30%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+
+}
+
+label {
+    display: inline-block;
+    width: 130px;
+    text-align: right;
+}
+
+form > div {
+    margin-top: 2px;
+}
+
+#submit {
+    /* text-align: left; */
+    /* float: left; */
+    /* align-self: flex-end; */
+    /* border: 3px solid black; */
+}
+
+
+.warning {
+    display: none;
+    margin-left: 5px;
+    border: 1px solid black;
+    border-radius: 7px;
+    width: 200px;
+    position: absolute;
+}
+
+div > .display-none {
+    display: none;
+}
+
+div > .display-inline {
+    display: inline;
+}

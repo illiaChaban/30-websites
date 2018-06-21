@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>The Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+</head>
+<body>
+    <form method="post">
+        <div id='fname-div'>
+            <label for='fname'>First Name:</label>
+            <input type='text' id='fname' autocomplete="given-name"/>
+        </div>
+        <div id='lname-div'>
+            <label for='lname'>Last Name:</label>
+            <input type='text' id='lname' autocomplete="family-name"/>
+        </div>
+        <div id='username-div'>
+            <label for='username'>Username: *</label>
+            <input type='text' id='username' autocomplete="username"/>
+            <i class="fas fa-times-circle display-inline wrong"></i>
+            <i class="fas fa-check-circle display-none correct"></i>
+        </div>
+        <div id='email-div'>
+            <label for='email'>Email: *</label>
+            <input type='email' id='email'/>
+            <i class="fas fa-times-circle display-inline wrong"></i>
+            <i class="fas fa-check-circle display-none correct"></i>
+            <!-- <div class='warning' id='email-warning'> -->
+
+            </div>
+        </div>
+        <div id='password-div'>
+            <label for='password'>Password: *</label>
+            <input type='password' id='password'/>
+            <div class='warning' id='password-weakness'>
+                <ul>
+                    <li>Must be between 4 and 10 characters long</li>
+                    <li>Must contain such characters:</li>
+                    <ul>
+                        <li>English uppercase characters (A-Z)</li>
+                        <li>English lowercase characters (a-z)</li>
+                        <li>Base-10 numeric digits (0-9)</li>
+                        <li>Non-alphanumeric (for example: !, $, # or %)</li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+        <div id='retype-div'>
+            <label for='retype-passw'>Retype password: *</label>
+            <input type='password' id='retype-passw'/>
+            <i class="fas fa-times-circle display-inline wrong"></i>
+            <i class="fas fa-check-circle display-none correct"></i>
+        </div>
+        <div id='avatar-div'>
+            <label for='avatar'>Avatar:</label>
+            <input type='file' id='avatar'/>
+        </div>
+        <div>
+            <!-- <input type="button" name="hello" id='btn'/> -->
+            <button type='button' id='submit'>Submit</button>
+        </div>
+
+    </form>
+    <script src='lib.js'></script>
+    <script src="main.js"></script>
+    
+</body>
+</html>
