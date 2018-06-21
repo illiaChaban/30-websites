@@ -60,6 +60,10 @@ input {
     position: absolute;
 }
 
+li {
+    margin-right: 10px;
+}
+
 div > .display-none, li > .display-none {
     display: none;
 }
