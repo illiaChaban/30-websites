@@ -10,13 +10,13 @@ body {
 
 form {
     position: absolute;
-    box-sizing: content-box;
+    /* box-sizing: content-box; */
     border: 1px solid rgb(18, 29, 18);
     border-radius: 1em;
     box-shadow: 0px 0px 0 8px rgba(161, 253, 161, 0.4);
     padding: 10px;
-    width: 400px;
-    height: 30%;
+    width: 350px;
+    height: 15em;
     top: 0;
     right: 0;
     bottom: 0;
@@ -27,6 +27,16 @@ form {
     flex-direction: column;
     align-items: center; */
 
+}
+
+input {
+    border: 1px solid rgb(214, 214, 214);
+}
+
+button {
+    border: 1px solid rgb(214, 214, 214);
+    border-radius: 10%;
+    box-shadow: 1px -2px 1px -1px gray;
 }
 
 label {
@@ -58,6 +68,15 @@ input {
     border-radius: 7px;
     width: 300px;
     position: absolute;
+}
+
+@media (max-width: 420px) {
+    .warning {
+        position: absolute;
+        top: -10em;
+        left: 30px;
+        /* right: 1fr; */
+    }
 }
 
 li {
@@ -105,7 +124,7 @@ div > .display-inline {
     display: block;
     height: 100%;
     border-radius: 5px;
-    background-color: rgb(43,194,83);
+    /* background-color: rgb(43,194,83); */
     box-shadow: 
         inset 0 2px 9px  rgba(255,255,255,0.3),
         inset 0 -2px 6px rgba(0,0,0,0.4);

@@ -64,16 +64,17 @@ password.addEventListener('blur', () => {
     passwordWeakness.style.display = 'none'
     if (! state.strongPassword) {
         passwordWeak.style.display = 'inline';
+    } else {
+        passwordStrong.style.display = 'inline';        
     }
 })
 
+const long = document.querySelector('#characters-long');
+const uppercase = document.querySelector('#uppercase');
+const lowercase = document.querySelector('#lowercase');
+const digits = document.querySelector('#digits');
+const nonAlpha = document.querySelector('#non-alpha');
 getProgress = () => {
-    const long = document.querySelector('#characters-long');
-    const uppercase = document.querySelector('#uppercase');
-    const lowercase = document.querySelector('#lowercase');
-    const digits = document.querySelector('#digits');
-    const nonAlpha = document.querySelector('#non-alpha');
-
     let p = password.value
     let passwInRange = p.length >= 4 && p.length <= 10;
     let hasUppercase = (/[A-Z]/).test(p);
@@ -81,9 +82,10 @@ getProgress = () => {
     let hasDigits = (/[0-9]/).test(p);
     let hasNonAlpha = (/[^a-zA-Z\d\s:]/).test(p);
 
+    // get progress and hightlight rules if ok
     let progress = 0;
     if ( passwInRange ) {
-        progress += 20;
+        progress += 20/7 * (p.length - 3);
         long.setAttribute('class', 'green');
         long.querySelector('.correct').style.display = 'inline';
     } else {
@@ -123,6 +125,11 @@ getProgress = () => {
         nonAlpha.querySelector('.correct').style.display = 'none';
     }
 
+    //change color of a progress bar 
+    if ( progress <= 40) { progressBar.style.backgroundColor = 'red'; }
+    else if ( progress <= 80 ) { progressBar.style.backgroundColor = 'yellow'; }
+    else { progressBar.style.backgroundColor = 'rgb(43,194,83)'; }
+
     progressBar.style.width = `${progress}%`;
 
     return progress;
@@ -130,9 +137,9 @@ getProgress = () => {
 
 password.addEventListener('input', () => {
     let progress = getProgress();
-    if (progress === 100) {
-        passwordWeakness.style.display = 'none';
-        passwordStrong.style.display = 'inline';
+    if (progress > 80) {
+        // passwordWeakness.style.display = 'none';
+        // passwordStrong.style.display = 'inline';
         state.strongPassword = true;
     } else {
         passwordWeakness.style.display = 'inline';
