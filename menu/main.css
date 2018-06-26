@@ -49,14 +49,6 @@ h2::after {
     margin: 0 10px;
 }
 
-@media ( max-width: 692px ) {
-    h2::before {
-        display: block;
-    }
-    h2::after {
-        display: block;
-    }
-}
 
 .menu {
     margin-top: 10px;
@@ -137,6 +129,13 @@ h2 {
 
     #main {
         max-width: 400px;
+    }
+
+    h2::before {
+        display: block;
+    }
+    h2::after {
+        display: block;
     }
 }
 
