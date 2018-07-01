@@ -1,8 +1,9 @@
 body {
+    font-family: 'Roboto', sans-serif;
     width: 100%;
     height: 100%;
     margin: 0;
-    font-size: 0.9em;
+    /* font-size: 0.9em; */
     text-shadow: 0.3px 0.3px white;
 
 }
@@ -29,11 +30,16 @@ body {
     position: relative;
     /* bottom: 15px; */
     padding: 3px 15px;
+    padding-bottom: 20px;
 }
 
 
 h2 {
     text-align: center;
+    font-family: 'Dancing Script', cursive;
+
+    /* font-size: 1.1em; */
+    padding-top: 5px;
 }
 
 h2::before {
@@ -54,6 +60,26 @@ h2::after {
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+
+}
+
+li {
+    /* border: 1px solid white; */
+    box-shadow: 2px 2px 2px rgba(0,125,121,0.4);
+    /* border-radius: 15px; */
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: background 2s, border-radius 1s,  box-shadow 2s, color 0.5s, text-shadow 0.5s, transform 2s;
+
+}
+
+.focused {
+    background: linear-gradient(90deg, rgba(4,0,69, 0.4) 0%, rgba(0,125,121,0.4) 55%, rgba(0,255,218,0.4) 100%);;
+    /* background-color: rgb(218, 42, 42); */
+    border: 1px solid white;
+    box-shadow: 2px 2px 2px rgba(0,125,121,0.4);
+    border-radius: 15px;
 }
 
 ul {
@@ -64,6 +90,9 @@ ul {
 
 h3 {
     margin: 0;
+    font-family: 'Dancing Script', cursive;
+    font-weight: bold;
+    font-size: 1.3rem;
 }
 
 li:hover, .whiteText {
@@ -78,6 +107,11 @@ li + li {
 li {
     padding-left: 10px;
 }
+
+.menu > ul {
+    padding-right: 5px;
+}
+
 p {
     margin: 0;
 }
@@ -97,14 +131,14 @@ h2 {
 
 .image > img {
     /* width: 100%; */
-    height: 360px;
-    width: 360px;
+    height: 340px;
+    width: 340px;
     border: 2px solid rgba(0, 119, 128, 0.438);
     box-shadow: 2px 2px 4px black;
 }
 
 #second {
-    height: 320px;
+    height: 310px;
     /* width: 360px; */
 }
 
@@ -141,11 +175,6 @@ h2 {
 
 
 
-.focused {
-    background: linear-gradient(90deg, rgba(4,0,69, 0.4) 0%, rgba(0,125,121,0.4) 55%, rgba(0,255,218,0.4) 100%);;
-    border: 1px solid white;
-    box-shadow: 2px 2px 2px rgba(0,125,121,0.4);
-    border-radius: 15px;
-}
+
 
 
