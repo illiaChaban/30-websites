@@ -10,8 +10,6 @@ function init() {
     fov: 80
   });
 
-  console.log(root)
-
   root.renderer.setClearColor(0x000000, 0);
   root.renderer.setPixelRatio(window.devicePixelRatio || 1);
   root.camera.position.set(0, 0, 60);
@@ -27,24 +25,67 @@ function init() {
 	})
   root.scene.add(slide);
 
-  var slide2 = new Slide(width, height, 'in');
-  var l2 = new THREE.ImageLoader();
-	l2.setCrossOrigin('Anonymous');
-	l2.load('https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/Raw+or+Steam+Oysters.jpg', function(img) {
-		slide2.setImage(img);
-    })
-  root.scene.add(slide2);
+  // var slide2 = new Slide(width, height, 'in');
+  // var l2 = new THREE.ImageLoader();
+	// l2.setCrossOrigin('Anonymous');
+	// l2.load('https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/Raw+or+Steam+Oysters.jpg', function(img) {
+	// 	slide2.setImage(img);
+  //   })
+  // root.scene.add(slide2);
   
     
-  var slide3 = new Slide(width, height, 'in');
-  var l3 = new THREE.ImageLoader();
-  l3.setCrossOrigin('Anonymous');
-  l3.load('https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/Seafood+Stuffed+Mushrooms.jpg', function(img) {
-      slide3.setImage(img);
-  })
-  root.scene.add(slide3);
+  // var slide3 = new Slide(width, height, 'in');
+  // var l3 = new THREE.ImageLoader();
+  // l3.setCrossOrigin('Anonymous');
+  // l3.load('https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/Signature+Shrimp+Cocktail.jpg', function(img) {
+  //     slide3.setImage(img);
+  // })
+  // root.scene.add(slide3);
 
-  let slides = [ slide, slide3, slide2 ]
+  // var slide4 = new Slide(width, height, 'in');
+  // var l4= new THREE.ImageLoader();
+	// l4.setCrossOrigin('Anonymous');
+	// l4.load('https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/Raw+or+Steam+Oysters.jpg', function(img) {
+	// 	slide4.setImage(img);
+  //   })
+  // root.scene.add(slide4);
+
+  const getImageName = /([a-z]+-*[" "]*)+[a-z]/i
+  let focusedElements = [];
+  let i = 0;
+
+  let menu1 = document.querySelector('.menu')
+        let firstLi = menu1.querySelector('li');
+        focusedElements.push(firstLi);
+        let img = menu1.querySelectorAll('.image > img')[i];
+        img.src = `./images/${firstLi.querySelector('h3').textContent.match(getImageName)[0]}.jpg`;
+        firstLi.className = 'focused whiteText'
+        menu1.querySelectorAll('li')
+            .forEach( li => {
+                li.addEventListener( 'click', () => {
+                    let title = li.querySelector('h3').textContent.match(getImageName)[0];
+                    title = title.split(' ').join('+');
+                    // console.log(title)
+                    img.src = `https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/${title}.jpg`;
+
+                    var slide1 = new Slide(width, height, 'in');
+                    var l1 = new THREE.ImageLoader();
+                    l1.setCrossOrigin('Anonymous');
+                    l1.load(`https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/${title}.jpg`, function(img) {
+                        slide1.setImage(img);
+                    })
+                    root.scene.add(slide1);
+                    slide1.transition();
+
+                    focusedElements[i].className = '';
+                    focusedElements[i] = li;
+                    focusedElements[i].className = 'focused whiteText'
+                })
+            })
+
+
+
+  // let slides = [ slide, slide2, slide3, slide4  ]
 
   document.getElementById('three-container').addEventListener( 'click', () => {
     //   slide.transition();
@@ -52,21 +93,22 @@ function init() {
     count = count % slides.length;
     console.log('click', count)
 
+    // slide2.transition();
     slides[count].transition();
   })
 
-//   var tl = new TimelineMax({repeat:-1, repeatDelay:1.0, yoyo: true});
+  // var tl = new TimelineMax({repeat:-1, repeatDelay:1.0, yoyo: true});
 
-//   tl.add(slide.transition(), 0);
-//   tl.add(slide2.transition(), 0);
+  // tl.add(slide.transition(), 0);
+  // tl.add(slide2.transition(), 0);
 
-//   createTweenScrubber(tl);
+  // createTweenScrubber(tl);
 
-//   window.addEventListener('keyup', function(e) {
-//     if (e.keyCode === 80) {
-//       tl.paused(!tl.paused());
-//     }
-//   });
+  // window.addEventListener('keyup', function(e) {
+  //   if (e.keyCode === 80) {
+  //     tl.paused(!tl.paused());
+  //   }
+  // });
 }
 
 ////////////////////
@@ -147,6 +189,7 @@ function Slide(width, height, animationPhase) {
     }
 
     // positions
+
 
     endPosition.copy(centroid);
     startPosition.copy(centroid);
@@ -389,25 +432,25 @@ var utils = {
   })()
 };
 
-function createTweenScrubber(tween, seekSpeed) {
-  seekSpeed = seekSpeed || 0.001;
+// function createTweenScrubber(tween, seekSpeed) {
+//   seekSpeed = seekSpeed || 0.001;
 
-  function stop() {
-    TweenMax.to(tween, 1, {timeScale:0});
-  }
+//   function stop() {
+//     TweenMax.to(tween, 1, {timeScale:0});
+//   }
 
-  function resume() {
-    TweenMax.to(tween, 1, {timeScale:1});
-  }
+//   function resume() {
+//     TweenMax.to(tween, 1, {timeScale:1});
+//   }
 
-  function seek(dx) {
-    var progress = tween.progress();
-    var p = THREE.Math.clamp((progress + (dx * seekSpeed)), 0, 1);
+//   function seek(dx) {
+//     var progress = tween.progress();
+//     var p = THREE.Math.clamp((progress + (dx * seekSpeed)), 0, 1);
 
-    tween.progress(p);
-  }
+//     tween.progress(p);
+//   }
 
-  var _cx = 0;
+//   var _cx = 0;
 
   // desktop
 //   var mouseDown = false;
@@ -451,7 +494,7 @@ function createTweenScrubber(tween, seekSpeed) {
 //     seek(dx);
 //     e.preventDefault();
 //   });
-}
+// }
 
 // init();
 window.onload = init;
