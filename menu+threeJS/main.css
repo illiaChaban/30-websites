@@ -111,6 +111,8 @@ p {
 }
 
 .image {
+    /* height: 340px; */
+    /* width: 340px; */
     box-shadow: 1px -1px 3px -1px black;
     margin: 5px 5px 5px 0px;
 }
@@ -151,6 +153,9 @@ h2 {
     }
 }
 
-
-
-
+.flex-equal-space{
+    display: flex;
+    flex-direction: column;
+    min-height: 340px;
+    justify-content: space-around;
+}
