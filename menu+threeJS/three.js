@@ -1,114 +1,69 @@
  // original code was made by Szenia Zadvornykh @zadvorsky
  // https://codepen.io/zadvorsky/pen/PNXbGo
 
-let count = 0;
+const width = 130;
+const height = 100;
+const getImageName = /([a-z]+-*[" "]*)+[a-z]/i
+let focusedElements = [];
 
-function init() {
-  var root = new THREERoot({
+getRoot = i => {
+  let root = new THREERoot({
     createCameraControls: !true,
     antialias: (window.devicePixelRatio === 1),
     fov: 80
-  });
+  }, i);
 
   root.renderer.setClearColor(0x000000, 0);
   root.renderer.setPixelRatio(window.devicePixelRatio || 1);
   root.camera.position.set(0, 0, 60);
 
-  var width = 100;
-  var height = 60;
+  return root;
+}
 
-  var slide = new Slide(width, height, 'out');
-	var l1 = new THREE.ImageLoader();
-	l1.setCrossOrigin('Anonymous');
-	l1.load('https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/Langostino+Lobster-Artichoke-and-Seafood+Dip.jpg', function(img) {
-	  slide.setImage(img);
-	})
-  root.scene.add(slide);
+getTitle = (liElement) => {
+  let title = liElement.querySelector('h3').textContent.match(getImageName)[0];
+  return title.split(' ').join('+');
+}
 
-  // var slide2 = new Slide(width, height, 'in');
-  // var l2 = new THREE.ImageLoader();
-	// l2.setCrossOrigin('Anonymous');
-	// l2.load('https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/Raw+or+Steam+Oysters.jpg', function(img) {
-	// 	slide2.setImage(img);
-  //   })
-  // root.scene.add(slide2);
-  
-    
-  // var slide3 = new Slide(width, height, 'in');
-  // var l3 = new THREE.ImageLoader();
-  // l3.setCrossOrigin('Anonymous');
-  // l3.load('https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/Signature+Shrimp+Cocktail.jpg', function(img) {
-  //     slide3.setImage(img);
-  // })
-  // root.scene.add(slide3);
-
-  // var slide4 = new Slide(width, height, 'in');
-  // var l4= new THREE.ImageLoader();
-	// l4.setCrossOrigin('Anonymous');
-	// l4.load('https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/Raw+or+Steam+Oysters.jpg', function(img) {
-	// 	slide4.setImage(img);
-  //   })
-  // root.scene.add(slide4);
-
-  const getImageName = /([a-z]+-*[" "]*)+[a-z]/i
-  let focusedElements = [];
-  let i = 0;
-
-  let menu1 = document.querySelector('.menu')
-        let firstLi = menu1.querySelector('li');
-        focusedElements.push(firstLi);
-        let img = menu1.querySelectorAll('.image > img')[i];
-        // img.src = `./images/${firstLi.querySelector('h3').textContent.match(getImageName)[0]}.jpg`;
-        firstLi.className = 'focused whiteText'
-        menu1.querySelectorAll('li')
-            .forEach( li => {
-                li.addEventListener( 'click', () => {
-                    let title = li.querySelector('h3').textContent.match(getImageName)[0];
-                    title = title.split(' ').join('+');
-                    // console.log(title)
-                    // img.src = `https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/${title}.jpg`;
-
-                    var slide1 = new Slide(width, height, 'in');
-                    var l1 = new THREE.ImageLoader();
-                    l1.setCrossOrigin('Anonymous');
-                    l1.load(`https://s3.us-east-2.amazonaws.com/30-websites-menu/menu1/${title}.jpg`, function(img) {
-                        slide1.setImage(img);
-                    })
-                    root.scene.add(slide1);
-                    slide1.transition();
-
-                    focusedElements[i].className = '';
-                    focusedElements[i] = li;
-                    focusedElements[i].className = 'focused whiteText'
-                })
-            })
-
-
-
-  // let slides = [ slide, slide2, slide3, slide4  ]
-
-  document.getElementById('three-container').addEventListener( 'click', () => {
-    //   slide.transition();
-    count ++;
-    count = count % slides.length;
-    console.log('click', count)
-
-    // slide2.transition();
-    slides[count].transition();
+createSlide = (imgTitle, initial = false) => {
+  let phase = initial ? 'out' : 'in';
+  let slide = new Slide(width, height, phase);
+  var l1 = new THREE.ImageLoader();
+  l1.setCrossOrigin('Anonymous');
+  l1.load(`https://s3.us-east-2.amazonaws.com/30-websites-menu/menu-threeJS/${imgTitle}.jpg`, function(img) {
+      slide.setImage(img);
   })
+  return slide;
+}
 
-  // var tl = new TimelineMax({repeat:-1, repeatDelay:1.0, yoyo: true});
 
-  // tl.add(slide.transition(), 0);
-  // tl.add(slide2.transition(), 0);
+function init() {
 
-  // createTweenScrubber(tl);
+  document.querySelectorAll('.menu').forEach( (menu, i) => {
+    let firstLi = menu.querySelector('li');
+    focusedElements.push(firstLi);
+    firstLi.className = 'focused whiteText'
 
-  // window.addEventListener('keyup', function(e) {
-  //   if (e.keyCode === 80) {
-  //     tl.paused(!tl.paused());
-  //   }
-  // });
+    let initialTitle = getTitle(firstLi);
+    let root = getRoot(i);
+    let initialSlide = createSlide(initialTitle, true);
+    root.scene.add(initialSlide);
+
+
+    menu.querySelectorAll('li')
+      .forEach( li => {
+          li.addEventListener( 'click', () => {
+              let title = getTitle(li)
+              let slide = createSlide(title);
+              root.scene.add(slide);
+              slide.transition();
+
+              focusedElements[i].className = '';
+              focusedElements[i] = li;
+              focusedElements[i].className = 'focused whiteText'
+          })
+      })
+  })
 }
 
 ////////////////////
@@ -316,7 +271,7 @@ SlideGeometry.prototype.bufferPositions = function () {
 };
 
 
-function THREERoot(params) {
+function THREERoot(params, i) {
   params = utils.extend({
     fov: 60,
     zNear: 10,
@@ -329,8 +284,9 @@ function THREERoot(params) {
     antialias: params.antialias,
     alpha: true
   });
+
   this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-  document.getElementById('three-container').appendChild(this.renderer.domElement);
+  document.querySelectorAll('.image')[i].appendChild(this.renderer.domElement);
 
   this.camera = new THREE.PerspectiveCamera(
     params.fov,
@@ -351,7 +307,7 @@ function THREERoot(params) {
   this.resize();
   this.tick();
 
-  window.addEventListener('resize', this.resize, false);
+  // window.addEventListener('resize', this.resize, false);
 }
 THREERoot.prototype = {
   tick: function () {
@@ -369,7 +325,7 @@ THREERoot.prototype = {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
 
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(340, 340);
   }
 };
 
@@ -432,70 +388,5 @@ var utils = {
   })()
 };
 
-// function createTweenScrubber(tween, seekSpeed) {
-//   seekSpeed = seekSpeed || 0.001;
-
-//   function stop() {
-//     TweenMax.to(tween, 1, {timeScale:0});
-//   }
-
-//   function resume() {
-//     TweenMax.to(tween, 1, {timeScale:1});
-//   }
-
-//   function seek(dx) {
-//     var progress = tween.progress();
-//     var p = THREE.Math.clamp((progress + (dx * seekSpeed)), 0, 1);
-
-//     tween.progress(p);
-//   }
-
-//   var _cx = 0;
-
-  // desktop
-//   var mouseDown = false;
-//   document.body.style.cursor = 'pointer';
-
-//   window.addEventListener('mousedown', function(e) {
-//     mouseDown = true;
-//     document.body.style.cursor = 'ew-resize';
-//     _cx = e.clientX;
-//     stop();
-//   });
-//   window.addEventListener('mouseup', function(e) {
-//     mouseDown = false;
-//     document.body.style.cursor = 'pointer';
-//     resume();
-//   });
-//   window.addEventListener('mousemove', function(e) {
-//     if (mouseDown === true) {
-//       var cx = e.clientX;
-//       var dx = cx - _cx;
-//       _cx = cx;
-
-//       seek(dx);
-//     }
-//   });
-//   // mobile
-//   window.addEventListener('touchstart', function(e) {
-//     _cx = e.touches[0].clientX;
-//     stop();
-//     e.preventDefault();
-//   });
-//   window.addEventListener('touchend', function(e) {
-//     resume();
-//     e.preventDefault();
-//   });
-//   window.addEventListener('touchmove', function(e) {
-//     var cx = e.touches[0].clientX;
-//     var dx = cx - _cx;
-//     _cx = cx;
-
-//     seek(dx);
-//     e.preventDefault();
-//   });
-// }
-
-// init();
 window.onload = init;
 console.ward = function() {};
