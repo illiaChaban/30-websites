@@ -1,6 +1,6 @@
-const canvas = document.querySelector("canvas"),
-      body = document.querySelector("body"),
-      mousePlaceholder = document.querySelector(".mousePlaceholder");
+const body = document.querySelector("body"),
+      canvas = body.querySelector("canvas"),
+      mousePlaceholder = body.querySelector(".mousePlaceholder");
 
 let mouseRecordings = [],
     playTimeout = 1000,
@@ -23,15 +23,18 @@ function resetRecording(e) {
 
 function recordMouse(e) {
     let { x, y, type, timeStamp } = e;
-    
     // find relative timeStamp
     let timeDifferenceBetweenRecords = timeStamp - lastTimeStamp;
     lastTimeStamp = timeStamp;
-    let mouseInfo = { x, y, timeDifferenceBetweenRecords, type, e};
+    // saving event info to array
+    let mouseInfo = { x, y, timeDifferenceBetweenRecords, type};
     mouseRecordings.push( mouseInfo );
 };
 
 function timeoutPlayRecording() {
+    // playing recording after timeout,
+    // saving setTimeuot index to stop recording if 
+    // user mouse over canvas while recording is playing
     playTimeoutIndex = setTimeout( () => { 
         mousePlaceholder.classList.remove("hide");
         playRecording(0);
@@ -47,7 +50,8 @@ function playRecording(index) {
             case "click":
                 playMouseClick(x,y);
             default:
-                mousePlaceholder.setAttribute("style", `left: ${x}px; top: ${y}px;`);
+                setPosition( mousePlaceholder, x, y );
+                // playing next recording
                 setTimeout( () => playRecording( ++index ), timeDifferenceBetweenRecords );
         }
     } else {
@@ -56,12 +60,18 @@ function playRecording(index) {
     }
 };
 
+function setPosition( el, left, top) {
+    el.setAttribute("style", `left: ${left}px; top: ${top}px;`);
+};
+
 function playMouseClick(x,y) {
+    // creating new element that will play click animation
     let clickEl = document.createElement("div");
     body.appendChild( clickEl );
     clickEl.className = "mousePlaceholder click";
-    clickEl.setAttribute("style", `left: ${x}px; top: ${y}px;`);
+    setPosition( clickEl, x, y );
 
+    // removing the element after the animation
     let animationDuration = 700;
     setTimeout( () => clickEl.remove(), animationDuration );
 };
