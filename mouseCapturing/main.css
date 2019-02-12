@@ -1,0 +1,48 @@
+canvas {
+    width: 500px;
+    height: 300px;
+    border: 2px solid black;
+
+}
+
+.mousePlaceholder {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: red;
+    display: block;
+    position: absolute;
+}
+
+.hide {
+    display: none;
+}
+
+@keyframes clickAnimation{
+    0% {
+        width: 20px;
+        height: 20px;
+    }
+
+    99% {
+        width: 60px;
+        height: 60px;
+        opacity: 0.2;
+        transform: translate( calc( (20px - 60px) / 2), calc( (20px - 60px) / 2 ));
+    }
+
+    100% {
+        width: 0;
+        height: 0;
+    }
+}
+
+.click {
+    /* content: ""; */
+    /* display: block;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: green; */
+    animation: clickAnimation .8s;
+}
