@@ -125,7 +125,7 @@ class Slider {
         this.focusOnSlide( currSlideIndex );
     };
     
-    focusOnSlide( childIndex, behavior="smooth" /* "auto" for snap focus */ ) {
+    focusOnSlide( childIndex, options={} ) {
         let { time = 200, interval = 10 } = options; // default options
 
 
@@ -162,7 +162,6 @@ class Slider {
         // let intervalId = setInterval( () => this.animateSlideMove(leftOffsetDiff, neededSlideLeftOffset, step, intervalId), interval );
         let that = this;
         function move() {
-            console.log({intervalId});
             if ( Math.abs( leftOffsetDiff ) <= Math.abs( step ) ) {
                 that.$slidesWrap.scrollLeft = neededSlideLeftOffset;
                 clearInterval( intervalId );
