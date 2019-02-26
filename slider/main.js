@@ -9,13 +9,21 @@ var currentSlide = 0;
 // class Slider {
 //     constructor(selector) {
 //         this.$slider = document.querySelector(selector);
-//         this.$slider.classList.add("activated");
-//         this.$slideGroup = $slider.querySelector(".slides");
+//         this.$slider.classList.add("activated"); // activating css
+//         this.$slidesWrap = this.$slider.querySelector(".slidesWrap");
+//         this.$slideGroup = this.$slider.querySelector(".slides");
 //         this.$slides = this.$slider.querySelectorAll("div.slide");
 //         this.sliderRect = $slider.getBoundingClientRect();
 //         this.sliderMouseDown = false;
 //         this.currentSlide = 0;
 //     }
+
+//     sizeSlides() {
+//         let {width, height} = sliderRect;
+//         $slides.forEach( slide => {
+//             slide.setAttribute("style", `width: ${width}px; height: ${height}px`);
+//         })
+//     };
 // }
 
 

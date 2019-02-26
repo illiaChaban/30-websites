@@ -3,7 +3,7 @@ const body = document.querySelector("body"),
       mousePlaceholder = body.querySelector(".mousePlaceholder");
 
 let mouseRecordings = [],
-    playTimeout = 1000,
+    playTimeout = 500,
     playTimeoutIndex, 
     lastTimeStamp;
 
