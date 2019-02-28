@@ -7,8 +7,9 @@
 
 .slider.activated .slidesWrap {
     width: 90%;
-    max-width: calc( 100% - 80px );
+    max-width: 780px;
     min-height: 300px;
+    max-height: 90vh;
     overflow: hidden;
     /* overflow-x: scroll; */
     position: relative;
