@@ -12,7 +12,7 @@ class Slider {
     }
 
     init() {
-        this.$slider.classList.add("slider", "activated", "center"); // activating CSS rules
+        this.applyInitialStyles();
         this.resizeSlider();
         this.bindSliderResizing();
         // this.indexSlides();
@@ -41,6 +41,14 @@ class Slider {
             this.resizeSlides();
             // console.log("slider Resized", {status});
         })
+    }
+
+    applyInitialStyles() {
+        this.$slider.classList.add("slider", "activated", "center"); // activating CSS rules
+        // add grab cursor to images
+        this.$slides.forEach( slide => {
+            slide.querySelector("img").classList.add("grab");
+        });
     }
 
     getImgNaturalAspectRatio( img ) {
@@ -72,7 +80,7 @@ class Slider {
 
     bindSliderResizing() {
         window.addEventListener( "resize", e => this.resizeSlider() );
-        document.addEventListener( "fullscreenchange", e => resizeSlider() );
+        document.addEventListener( "fullscreenchange", e => this.resizeSlider() );
     };
     
     indexSlides() {
@@ -84,14 +92,57 @@ class Slider {
     };
     
     createArrows() {
-        let arrowLeft = util.createEl("arrow pointer left", "button");
-        let arrowRight = util.createEl("arrow pointer right", "button");
+        let arrowLeftWrap = util.createEl("arrow left");
+        let arrowLeftButton = util.createEl("pointer", "button");
+        let arrowRightWrap = util.createEl("arrow right");
+        let arrowRightButton = util.createEl("pointer", "button");
     
-        // bindArrows
-        arrowLeft.addEventListener("click", () => this.focusOnSlide( this.findCurrSlideChildIndex() - 1 ));
-        arrowRight.addEventListener("click", () => this.focusOnSlide( this.findCurrSlideChildIndex() + 1 ));
+        // bindArrows to scrolling slides
+        arrowLeftButton.addEventListener("click", () => this.focusOnSlide( this.findCurrSlideChildIndex() - 1 ));
+        arrowRightButton.addEventListener("click", () => this.focusOnSlide( this.findCurrSlideChildIndex() + 1 ));
     
-        this.$slider.append( arrowLeft, arrowRight );
+        // adding arrows css
+        let arrowStylesLink = util.createEl("", "link");
+        arrowStylesLink.setAttribute("rel", "stylesheet");
+        arrowStylesLink.setAttribute("type", "text/css");
+        arrowStylesLink.setAttribute("media", "screen");
+        arrowStylesLink.setAttribute("href", "arrows.css");
+        document.querySelector("head").append(arrowStylesLink);
+        arrowStylesLink.addEventListener("load", () => this.resizeSlider());
+
+        // appending arrows
+        arrowRightWrap.append( arrowRightButton );
+        arrowLeftWrap.append( arrowLeftButton );
+        this.$slider.append( 
+            arrowLeftWrap,
+            arrowRightWrap 
+        );
+
+        this.bindArrowsStyleAnimation();
+    };
+
+    bindArrowsStyleAnimation() {
+        // animate background linear gradient and opacity + 
+        // arrow color depending on the mouse position
+        let root = document.documentElement;
+        slider.$slider.querySelectorAll(".arrow").forEach( arrowWrap => {
+            arrowWrap.addEventListener('mousemove', e => {
+                let mouseToArrowCloseness;
+                if ( e.target.tagName === "BUTTON" ) {
+                    mouseToArrowCloseness = 1;
+                } else {
+                    let arrowButton = e.target.querySelector("button");
+                    let { left, top, width, height } = arrowButton.getBoundingClientRect();
+                    let arrowButtonCenter = [ left + width/2, top + height/2 ];
+                    let { clientX, clientY } = e;
+                    let mousePosition = [ clientX, clientY ];
+                    mouseToArrowCloseness = util.findMouseToCenterCloseness( mousePosition, arrowButtonCenter );
+                    mouseToArrowCloseness = Number(mouseToArrowCloseness) > 0.25 ? mouseToArrowCloseness : "0.25";
+                    // console.log({ mouseToArrowCloseness })
+                }
+                root.style.setProperty('--mouse-close-to-arrow', mouseToArrowCloseness);
+            });
+        });
     };
     
     dragSlide(e) {
@@ -136,6 +187,7 @@ class Slider {
             this.reorganizeSlides();
             // save drag start position to determine the length of a drag
             this.dragStartPosition = e.clientX; 
+            e.target.classList.replace("grab", "grabbing");
         } else { 
             console.warn( "scrolling slide is still being animated"); 
         }
@@ -164,6 +216,7 @@ class Slider {
             this.focusOnCurrSlide();
         }
 
+        e.target.classList.replace("grabbing", "grab"); 
         this.sliderMouseDown = false;
         this.dragStartPosition = null; // clear drag start position
     }
@@ -225,7 +278,8 @@ class Slider {
                 break;
         };
         currSlide.scrollIntoView();
-    }
+    };
+
     
     preventDefaultLinkBehavior(e) {
         if ( e.path.find( (el) => el.tagName === "A" ) !== -1 ) e.preventDefault();
@@ -241,9 +295,38 @@ window.util = {
         el.className = className;
         return el;
     },
+    findAngle: ([x1,y1], [x2,y2]) => {
+        let opposite = y2 - y1;
+        let adjacent = x2 - x1;
+        let tan = opposite / adjacent;
+        let angleRad = Math.atan( tan );
+        let angleDeg = angleRad / ( Math.PI / 180 );
+        let adjustedAngle = Math.round( angleDeg + 90 );
+        return adjustedAngle + "deg";
+    },
+    findMouseToCenterCloseness( mousePosition, center ) {
+        let [x1,y1] = mousePosition;
+        let [x2,y2] = center;
+        let xClose = util.findPointsCloseness(x1,x2);
+        let yClose = util.findPointsCloseness(y1,y2);
+        let closeness = ( xClose + yClose ) / 2;
+        return closeness.toFixed(3);
+    },
+    findPointsCloseness( x1, x2 ) {
+        let xClose = x1/x2;
+        if ( xClose > 1 ) {
+            let remainder = xClose % 1;
+            xClose = 1 - remainder;
+        }
+        // console.log({x1,x2,xClose})
+        return xClose;
+    }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
     window.slider = new Slider("#my-slider"); // making it global to make it accessible from the console
     slider.init(); 
+
+
+
 });
