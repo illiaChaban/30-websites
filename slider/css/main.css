@@ -6,6 +6,9 @@
     height: auto;
 }
 
+.hide {
+    display: none;
+}
 
 .slider.activated .slidesWrap {
     width: 100%; 

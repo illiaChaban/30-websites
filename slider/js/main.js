@@ -2,6 +2,8 @@
 TO DOs:
 1. this slider assumes that all images have the same relative aspect ratio -> change
 2. put bullets inside slider instead of as a sibling
+3. refactor , put different functionality into different files
+4. fix bug --> when draggin from side to side it scrolls to the second image ( reorganizeSlides causing issue ?)
 */
 
 
@@ -23,9 +25,10 @@ class Slider {
         this.applyInitialStyles();
         this.resizeSlider();
         this.bindSliderResizing();
-        this.indexSlides();
-        this.bindDragDropSlides();
         this.createArrows();
+        this.bindDragDropSlides();
+
+        this.indexSlides();
         this.createBulletsNavigation();
         console.log("Slider was initialized");
     };
@@ -91,7 +94,7 @@ class Slider {
             rightSlidePersentage === -100 && bullets[ bulletIndexTo ].classList.remove("active");
             // console.log(bulletIndexFrom)
 
-            console.log({leftSlideIndex, rightSlideIndex, leftSlidePersentage, rightSlidePersentage })
+            // console.log({leftSlideIndex, rightSlideIndex, leftSlidePersentage, rightSlidePersentage })
             
             // let info = {
             //     firstSlideCoef: x[0] % 1,
@@ -272,6 +275,10 @@ class Slider {
     startDragSlide(e) {
         e.preventDefault();
         if ( !this.sliderIsScrolling ) {
+
+            // disable arrow when draggin --> bug !!!!!!!!
+            // this.$slider.querySelectorAll(".arrow").forEach( arrow => arrow.classList.add("hide") );
+            
             this.sliderMouseDown = true; 
             this.reorganizeSlides();
             // save drag start position to determine the length of a drag
@@ -290,6 +297,11 @@ class Slider {
             console.error( "drag Start position doesn't exist!")
             this.focusOnCurrSlide();
         };
+
+
+        // disable arrow when draggin --> bug !!!!!!!!
+        // this.$slider.querySelectorAll(".arrow").forEach( arrow => arrow.classList.remove("hide") );
+
 
         let dragLength = this.dragStartPosition - e.clientX;
         let dragLengthAbs = Math.abs( dragLength );
