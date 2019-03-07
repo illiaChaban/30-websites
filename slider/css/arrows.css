@@ -1,6 +1,5 @@
 
 :root {
-
     --mouse-close-to-arrow: 0.25;
     --opacity: calc( var(--mouse-close-to-arrow ) / 3 );
     --perc: calc( 50% + (1 - var( --mouse-close-to-arrow  )) * 50% );

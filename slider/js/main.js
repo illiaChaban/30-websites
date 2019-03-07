@@ -4,6 +4,7 @@ TO DOs:
 2. put bullets inside slider instead of as a sibling
 3. refactor , put different functionality into different files
 4. fix bug --> when draggin from side to side it scrolls to the second image ( reorganizeSlides causing issue ?)
+5. add touch events
 */
 
 
@@ -11,7 +12,7 @@ TO DOs:
 class Slider {
     constructor(selector) {
         this.$slider = document.querySelector(selector);
-        this.$slidesWrap = this.$slider.querySelector(".slidesWrap");
+        this.$slidesWindow = this.$slider.querySelector(".slidesWindow");
         this.$slideGroup = this.$slider.querySelector(".slides");
         this.$slides = this.$slider.querySelectorAll("div.slide");
         this.sliderRect;
@@ -38,7 +39,17 @@ class Slider {
         let bulletsGroup = document.querySelector(".bullets");
         let bullets = bulletsGroup.querySelectorAll(".bullet");
 
+        // index bullets
+        bullets.forEach( (bullet, i) => bullet.setAttribute("data-index", i) );
 
+
+        bullets.forEach( img => img.addEventListener( "click", e => {
+                let bullet = e.target.closest(".bullet");
+                let dataIndex = bullet.getAttribute("data-index");
+                let slide = this.$slidesWindow.querySelector(`[data-index='${dataIndex}']`);
+                slide.scrollIntoView({behavior:"smooth"});
+            })
+        )
 
         // bulletsGroup
         //     .querySelectorAll(".bullet").forEach( bullet => {
@@ -49,9 +60,8 @@ class Slider {
 
         //     });
 
-        this.$slidesWrap.addEventListener("scroll", e => {
-            let allSlidesWidth = this.$slideGroup.offsetWidth;
-            let currPosition = this.$slidesWrap.scrollLeft;
+        this.$slidesWindow.addEventListener("scroll", e => {
+            let currPosition = this.$slidesWindow.scrollLeft;
             // find slide indexes that are in view with percentage
             let currViewBoundaries = [ currPosition, currPosition + this.sliderRect.width ];
             let x = currViewBoundaries.map( a => a / this.sliderRect.width );
@@ -74,7 +84,7 @@ class Slider {
 
             
 
-            let slides = this.$slidesWrap.querySelectorAll(".slide");
+            let slides = this.$slidesWindow.querySelectorAll(".slide");
             let slideFrom = slides[ leftSlideIndex ];
             let slideTo = slides[ rightSlideIndex ] || slides[ 0 ];
             let bulletIndexFrom = slideFrom.getAttribute( "data-index" );
@@ -154,12 +164,12 @@ class Slider {
         this.updateSliderDimensionsInfo();
         let currWidth = this.sliderRect.width;
         let newHeight = currWidth / aspectRatio;
-        this.$slidesWrap.style.height = newHeight + "px";
+        this.$slidesWindow.style.height = newHeight + "px";
         this.updateSliderDimensionsInfo();
     };
 
     updateSliderDimensionsInfo() {
-        this.sliderRect = this.$slidesWrap.getBoundingClientRect();
+        this.sliderRect = this.$slidesWindow.getBoundingClientRect();
     }
 
     resizeSlides() {
@@ -205,7 +215,7 @@ class Slider {
         // appending arrows
         arrowRightWrap.append( arrowRightButton );
         arrowLeftWrap.append( arrowLeftButton );
-        this.$slider.append( 
+        this.$slider.querySelector(".slidesWrap").append( 
             arrowLeftWrap,
             arrowRightWrap 
         );
@@ -239,9 +249,9 @@ class Slider {
     
     dragSlide(e) {
         if ( this.sliderMouseDown ) {
-            if ( e.path.includes(this.$slidesWrap) ) {
+            if ( e.path.includes(this.$slidesWindow) ) {
                 // dragging
-                this.$slidesWrap.scrollLeft -= e.movementX;
+                this.$slidesWindow.scrollLeft -= e.movementX;
             } else {
                 // if while dragging mouse went out of the slider area, focus on the current slide
                 this.sliderMouseDown = false;
@@ -251,7 +261,7 @@ class Slider {
     };
     
     findCurrSlideChildIndex() {
-        let sliderOffset = this.$slidesWrap.scrollLeft;
+        let sliderOffset = this.$slidesWindow.scrollLeft;
         let currentSlideIndex = Math.round( sliderOffset / this.sliderRect.width );
         return currentSlideIndex;
     }
@@ -266,10 +276,10 @@ class Slider {
     }
     
     bindDragDropSlides() {
-        this.$slidesWrap.addEventListener("click", e => this.preventDefaultLinkBehavior(e) );
-        this.$slidesWrap.addEventListener("mousedown", e => this.startDragSlide(e) );
-        this.$slidesWrap.addEventListener("mousemove", e => this.dragSlide(e) );
-        this.$slidesWrap.addEventListener("mouseup", e => this.dropSlide(e) );
+        this.$slidesWindow.addEventListener("click", e => this.preventDefaultLinkBehavior(e) );
+        this.$slidesWindow.addEventListener("mousedown", e => this.startDragSlide(e) );
+        this.$slidesWindow.addEventListener("mousemove", e => this.dragSlide(e) );
+        this.$slidesWindow.addEventListener("mouseup", e => this.dropSlide(e) );
     };
 
     startDragSlide(e) {
@@ -351,15 +361,15 @@ class Slider {
             this.sliderIsScrolling = true;
 
             // set initial slider position on scrolling animation start
-            this.lastSliderPosition = this.$slidesWrap.scrollLeft;
+            this.lastSliderPosition = this.$slidesWindow.scrollLeft;
             return;
         } 
-        if ( this.lastSliderPosition === this.$slidesWrap.scrollLeft ) {
+        if ( this.lastSliderPosition === this.$slidesWindow.scrollLeft ) {
             this.sliderIsScrolling = false;
             clearInterval( intervalId );
             this.lastSliderPosition = null; // reset last slider position
         } else {
-            this.lastSliderPosition = this.$slidesWrap.scrollLeft;
+            this.lastSliderPosition = this.$slidesWindow.scrollLeft;
         }
     };
 
