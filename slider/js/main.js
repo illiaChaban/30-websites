@@ -1,3 +1,11 @@
+/* 
+TO DOs:
+1. this slider assumes that all images have the same relative aspect ratio -> change
+2. put bullets inside slider instead of as a sibling
+*/
+
+
+
 class Slider {
     constructor(selector) {
         this.$slider = document.querySelector(selector);
@@ -15,23 +23,88 @@ class Slider {
         this.applyInitialStyles();
         this.resizeSlider();
         this.bindSliderResizing();
-        // this.indexSlides();
+        this.indexSlides();
         this.bindDragDropSlides();
         this.createArrows();
         this.createBulletsNavigation();
-        console.log("Slider was initialized")
+        console.log("Slider was initialized");
     };
 
     createBulletsNavigation() {
-        // this.$slider
-        document
-            .querySelectorAll(".bullet").forEach( bullet => {
+        // should be this.$slider.querySele...
+        let bulletsGroup = document.querySelector(".bullets");
+        let bullets = bulletsGroup.querySelectorAll(".bullet");
 
-                bullet.addEventListener("click", () => {
-                    bullet.classList.toggle("active")
-                });
 
-            });
+
+        // bulletsGroup
+        //     .querySelectorAll(".bullet").forEach( bullet => {
+
+        //         bullet.addEventListener("click", () => {
+        //             bullet.classList.toggle("active")
+        //         });
+
+        //     });
+
+        this.$slidesWrap.addEventListener("scroll", e => {
+            let allSlidesWidth = this.$slideGroup.offsetWidth;
+            let currPosition = this.$slidesWrap.scrollLeft;
+            // find slide indexes that are in view with percentage
+            let currViewBoundaries = [ currPosition, currPosition + this.sliderRect.width ];
+            let x = currViewBoundaries.map( a => a / this.sliderRect.width );
+
+
+            let leftSlideIndex =  Math.floor( x[0] );
+            // let rightSlideIndex = leftSlideIndex + 1;
+            let rightSlideIndex = Math.floor( x[1] );
+            // let secondSlideIndex = Math.floor( x[1] );
+            // let direction = secondSlideIndex > firstSlideIndex ? 1 : -1;
+
+
+
+            let leftSlideCoef = x[0] % 1;
+            let leftSlidePersentage = Math.round( leftSlideCoef * 100 );
+            let rightSlidePersentage = leftSlidePersentage - 100 ;
+
+            bulletsGroup.style.setProperty('--left-bullet-layer-percentage', leftSlidePersentage + "%" );
+            bulletsGroup.style.setProperty('--right-bullet-layer-percentage', rightSlidePersentage + "%" );
+
+            
+
+            let slides = this.$slidesWrap.querySelectorAll(".slide");
+            let slideFrom = slides[ leftSlideIndex ];
+            let slideTo = slides[ rightSlideIndex ] || slides[ 0 ];
+            let bulletIndexFrom = slideFrom.getAttribute( "data-index" );
+            let bulletIndexTo = slideTo.getAttribute( "data-index" );
+            
+
+
+            // refactor !!!!!
+            bullets.forEach( bullet => {
+                bullet.classList.remove("from", "to", "active");
+            })
+            bullets[ bulletIndexFrom ].classList.add("from", "active");
+            bullets[ bulletIndexTo ].classList.add("to", "active");
+
+            // enlarge active bullet
+            // leftSlidePersentage === 0 && bullets[ bulletIndexFrom ].classList.add("active");
+            rightSlidePersentage === -100 && bullets[ bulletIndexTo ].classList.remove("active");
+            // console.log(bulletIndexFrom)
+
+            console.log({leftSlideIndex, rightSlideIndex, leftSlidePersentage, rightSlidePersentage })
+            
+            // let info = {
+            //     firstSlideCoef: x[0] % 1,
+            //     secondSlideCoef: x[1] % 1, // === firstSlideCoef
+
+
+            // }
+
+            // console.log({ allSlidesWidth, currPosition });
+            // console.log(x)
+            // console.log( {leftSlidePersentage, rightSlidePersentage} )
+
+        })
 
 
 
@@ -253,6 +326,8 @@ class Slider {
         let slide = this.$slideGroup.children[ childIndex ];
         slide.scrollIntoView({behavior: "smooth"});
         
+        // ### checking scrolling state to prevent user from scrolling to the next slide before
+        // ### current animation finishes
         // --- instead of implementing my own scroll, I've decided it will be easier
         // --- and more readable to reuse scrollIntoView with updating the state on the go
         // if interval time is lower than 30, it updates too quickly and "updateSliderIsScrollingState" might not work correctly
@@ -293,7 +368,9 @@ class Slider {
                 this.$slideGroup.append( firstSlide );
                 break;
         };
-        currSlide.scrollIntoView();
+
+        let alignToTop = false; // otherwise page jumps to focus on the element
+        currSlide.scrollIntoView( alignToTop );
     };
 
     
