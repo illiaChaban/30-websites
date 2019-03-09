@@ -1,4 +1,4 @@
-    Slider.prototype.bindDragDropSlides = function() {
+    Slider.prototype.initDragDrop = function() {
         this.$slidesWindow.addEventListener("click", e => this.preventDefaultLinkBehavior(e) );
         this.$slidesWindow.addEventListener("mousedown", e => this.startDragSlide(e) );
         this.$slidesWindow.addEventListener("mousemove", e => this.dragSlide(e) );

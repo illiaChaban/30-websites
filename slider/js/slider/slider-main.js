@@ -16,33 +16,22 @@ class Slider {
         this.$slideGroup = this.$slider.querySelector(".slides");
         this.$slides = this.$slider.querySelectorAll("div.slide");
         this.sliderRect;
-        this.sliderMouseDown = false;
-        this.dragStartPosition = null;
         this.sliderIsScrolling = false;
-        this.lastSliderPosition = null;
     }
 
     init() {
         this.applyInitialStyles();
         this.resizeSlider();
         this.bindSliderResizing();
-        this.createArrows();
-        this.bindDragDropSlides();
-
-        this.indexSlides();
-        this.createBulletsNavigation();
+        this.initArrows();
+        this.initDragDrop();
+        this.initBullets();
         console.log("Slider was initialized");
     };
 
 
     
-    indexSlides() {
-        let i = 0;
-        this.$slides.forEach( slide => {
-            slide.setAttribute("data-index", i);
-            i++;
-        })
-    };
+
     
 
 
