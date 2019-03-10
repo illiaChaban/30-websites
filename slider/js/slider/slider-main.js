@@ -1,10 +1,7 @@
 /* 
 TO DOs:
 1. this slider assumes that all images have the same relative aspect ratio -> change
-2. put bullets inside slider instead of as a sibling
-3. refactor , put different functionality into different files
-4. fix bug --> when draggin from side to side it scrolls to the second image ( reorganizeSlides causing issue ?)
-5. add touch events
+4. create Desktop and mobile arrows
 */
 
 
@@ -21,20 +18,24 @@ class Slider {
 
     init() {
         this.applyInitialStyles();
-        this.resizeSlider();
-        this.bindSliderResizing();
+        this.initSliderResize();
         this.initArrows();
         this.initDragDrop();
         this.initBullets();
         console.log("Slider was initialized");
     };
 
+    applyInitialStyles() {
+        this.$slider.classList.add("slider", "activated", "center"); // activating CSS rules
+        // add grab cursor to images
+        this.$slides.forEach( slide => {
+            slide.querySelector("img").classList.add("grab");
+        });
+    };
 
-    
-
-    
-
-
-
-
-}
+    createEl( className, tag="div" ) {
+        let el = document.createElement( tag );
+        el.className = className;
+        return el;
+    };
+};

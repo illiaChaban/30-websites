@@ -1,8 +1,8 @@
 
 :root {
     --mouse-close-to-arrow: 0.25;
-    --opacity: calc( var(--mouse-close-to-arrow ) / 3 );
-    --perc: calc( 50% + (1 - var( --mouse-close-to-arrow  )) * 50% );
+    --opacity: calc( var(--mouse-close-to-arrow) / 3 );
+    --perc: calc( 50% + (1 - var(--mouse-close-to-arrow) ) * 50% );
 }
 
 .arrow {
@@ -11,10 +11,25 @@
     width: calc( 100% / 4);
     max-width: 100px;
     border: none;
-    background: rgba(0,0,0,0);
+    /* background: rgba(0,0,0,0); */
+    background: linear-gradient( 
+        to left,
+        rgba(0,0,0,0) 0%, 
+        rgba(0,0,0, 0.3) 50%, 
+        rgba(0,0,0,1) 100% 
+    );
     opacity: 0.25;
     top: 0;
-    transition: opacity .8s ease;
+    /* transition: opacity .6s; */
+}
+/* right arrow  */
+.arrow:last-child{
+    background: linear-gradient( 
+        to right,
+        rgba(0,0,0,0) 0%, 
+        rgba(0,0,0, 0.3) 50%, 
+        rgba(0,0,0,1) 100% 
+    );
 }
 
 .arrow button:focus {
@@ -83,4 +98,12 @@
 .arrow:hover button {
     border-color: rgba(255, 255, 255, var( --mouse-close-to-arrow, 0.5 ));
 }
+
+
+/* touch events */
+.arrow.touch {
+    transition: 0.1s ease;
+    opacity: 1;
+}
+
 

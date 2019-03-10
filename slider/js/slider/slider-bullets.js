@@ -17,15 +17,15 @@ Slider.prototype.indexSlides = function() {
 };
 
 Slider.prototype.createBulletWrap = function( slide ) {
-    let bulletWrap = util.createEl("bulletWrap");
+    let bulletWrap = this.createEl("bulletWrap");
     // bullet
-    let bullet = util.createEl("bullet pointer");
+    let bullet = this.createEl("bullet pointer");
     let slideDataIndex = slide.getAttribute("data-index");
     // indexing bullet
     bullet.setAttribute("data-index", slideDataIndex);
     // img
     let imgSrc = slide.querySelector("img").getAttribute("src");
-    let img = util.createEl("", "img");
+    let img = this.createEl("", "img");
     img.src = imgSrc;
     img.alt = "bullet";
     // appending
@@ -35,7 +35,7 @@ Slider.prototype.createBulletWrap = function( slide ) {
 };
 
 Slider.prototype.createBullets = function() {
-    let bulletsGroup = util.createEl("bullets");
+    let bulletsGroup = this.createEl("bullets");
     let bulletWraps = [];
     this.$slides.forEach( slide => {
         let bulletWrap = this.createBulletWrap( slide );
