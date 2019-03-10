@@ -6,40 +6,54 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/arrows.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/bullets.css" />
 </head>
 
 <body>
     <div id="my-slider">
 
-        <div class="slidesWrap center">
-            <div class="slides flex">
-                <div class="slide">
-                    <a href="img/1.jpg">
-                        <img src="img/1.jpg" alt="slide">
-                    </a>
-                </div>
-                <div class="slide">
-                    <a href="img/2.jpg">
-                        <img src="img/2.jpg" alt="slide">
-                    </a>
-                </div>
-                <div class="slide">
-                    <a href="img/3.jpg">
-                        <img src="img/3.jpg" alt="slide">
-                    </a>
-                </div>
-                <div class="slide">
-                    <a href="img/4.jpg">
-                        <img src="img/4.jpg" alt="slide">
-                    </a>
+        <div class="slidesWrap">
+            <div class="slidesWindow center">
+                <div class="slides flex">
+                    <div class="slide">
+                        <a href="img/1.jpg">
+                            <img src="img/1.jpg" alt="slide">
+                        </a>
+                    </div>
+                    <div class="slide">
+                        <a href="img/2.jpg">
+                            <img src="img/2.jpg" alt="slide">
+                        </a>
+                    </div>
+                    <div class="slide">
+                        <a href="img/3.jpg">
+                            <img src="img/3.jpg" alt="slide">
+                        </a>
+                    </div>
+                    <div class="slide">
+                        <a href="img/4.jpg">
+                            <img src="img/4.jpg" alt="slide">
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <script src="main.js"></script>
+
+    <!-- slider scripts -->
+    <!-- ideally should be compiled into one file -->
+    <script src="js/slider/slider-main.js"></script>
+    <script src="js/slider/slider-bullets.js"></script>
+    <script src="js/slider/slider-arrows.js"></script>
+    <script src="js/slider/slider-drag-drop.js"></script>
+    <script src="js/slider/slider-resize.js"></script>
+    <script src="js/slider/slider-navigation.js"></script>
+    <!-- slider scripts end -->
+
+    <script src="js/main.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,67 @@
+
+
+.bullets {
+    /* variables */
+    --bullet-side: 30px;
+    --active-bullet-side: calc( var( --bullet-side ) + 6px );
+    --left-bullet-layer-percentage: 0%;
+    /* --right-bullet-layer-percentage: calc( var( --left-bullet-layer-percentage ) - 100% ); */
+    --right-bullet-layer-percentage: 0%; /* calculating with Javascript instead */
+
+
+    /* variables end */
+    margin-top: 5px;
+    width: 100%;
+    text-align: center;
+    line-height: var( --active-bullet-side );
+    
+}
+
+.bullet {
+    position: relative;
+    display: inline-block;
+    width: var( --bullet-side ) ;
+    height: var( --bullet-side ) ;
+    border: 1px solid rgb(97, 97, 97);
+    border-radius: 50%;
+    vertical-align: middle;
+    overflow: hidden;
+
+    transition: all .3s ease;
+}
+
+.bullet.active {
+    width: var( --active-bullet-side );
+    height: var( --active-bullet-side );
+}
+.bullet::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+
+    position: absolute;
+    top: 0px; 
+    left: 100%; /* hidden */
+    z-index: 1;
+}
+
+.bullet.from::after {
+    left: var( --left-bullet-layer-percentage );
+}
+
+.bullet.to::after {
+    left: var( --right-bullet-layer-percentage );
+}
+
+.bulletWrap {
+    display: inline-block;
+    margin: 2px;
+    width: var( --active-bullet-side );
+    height: var( --active-bullet-side );
+}
+
+.bullet img {
+    width: 100%;
+    height: 100%;
+}
