@@ -1,8 +1,12 @@
 Slider.prototype.initArrows = function() {
-    this.createArrows();
-    this.bindArrowsClick();
-    this.bindArrowsTouch();
-    this.bindArrowsStyleAnimationOnHover();
+    try {
+        this.createArrows();
+        this.bindArrowsClick();
+        this.bindArrowsTouch();
+        this.bindArrowsStyleAnimationOnHover();
+    } catch(e) {
+        displayErrorOnThePage && displayErrorOnThePage(e);
+    }
 };
 
 Slider.prototype.createArrows = function() {

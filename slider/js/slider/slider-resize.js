@@ -45,10 +45,14 @@ Slider.prototype.updateSliderDimensionsInfo = function() {
 }
 
 Slider.prototype.resizeSlides = function() {
-    let {width, height} = this.sliderRect;
-    this.$slides.forEach( slide => {
-        slide.setAttribute("style", `width: ${width}px; height: ${height}px`);
-    });
+    try {
+        let {width, height} = this.sliderRect;
+        this.$slides.forEach( slide => {
+            slide.setAttribute("style", `width: ${width}px; height: ${height}px`);
+        });
+    } catch(e) {
+        displayErrorOnThePage && displayErrorOnThePage(e);
+    };
 };
 
 
