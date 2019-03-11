@@ -1,10 +1,7 @@
 /* 
 TO DOs:
 1. this slider assumes that all images have the same relative aspect ratio -> change
-4. create Desktop and mobile arrows
 */
-
-
 
 class Slider {
     constructor(selector) {
