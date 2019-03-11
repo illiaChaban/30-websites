@@ -69,6 +69,8 @@ Slider.prototype.dropSlide = function(e) {
 Slider.prototype.dragSlide = function(e) {
     try {
         if ( this.sliderMouseDown ) {
+            if ( e.path === undefined ) throw new Error("epath undefined");
+            if ( e.path.includes === undefined ) throw new Error("epath includes undefined");
             if ( e.path.includes(this.$slidesWindow) ) {
                 // dragging
                 let movementX = e.movementX;
