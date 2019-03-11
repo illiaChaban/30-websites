@@ -5,6 +5,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 function displayErrorOnThePage( error ) {
     console.error(error);
-    let errorParagraph = "<p>" + error.stack + "</p>";
+    let errorParagraph = "<p>" + error.message + "   ||   " + error.stack + "</p>";
     document.getElementById("error-message").innerHTML += errorParagraph;
 }
