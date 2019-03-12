@@ -64,7 +64,7 @@ Slider.prototype.navigateToSlideOnBulletClick = function(e) {
         if ( bullet ) {
             let dataIndex = bullet.getAttribute("data-index");
             let slide = this.$slidesWindow.querySelector(`[data-index='${dataIndex}']`);
-            slide.scrollIntoView({behavior:"smooth", block: "end", inline: "nearest"});
+            this.focusOnSlide( slide );
         };
     } catch(e) {
         displayErrorOnThePage && displayErrorOnThePage(e);
@@ -91,12 +91,12 @@ Slider.prototype.scrollBulletShadow = function() {
     
         // find percentage of the slide that is visible
         let leftSlideVisibilityCoef = currSlidesCoef[0] % 1;
-        let leftSlideVisibilityPersentage = Math.round( leftSlideVisibilityCoef * 100 );
-        let rightSlidePersentage = leftSlideVisibilityPersentage - 100 ;
+        let leftBulletShadowPosition = Math.round( leftSlideVisibilityCoef * 100 );
+        let rightBulletShadowPosition = leftBulletShadowPosition - 100 ;
     
         // setting css variables values
-        bulletsGroup.style.setProperty('--left-bullet-layer-percentage', leftSlideVisibilityPersentage + "%" );
-        bulletsGroup.style.setProperty('--right-bullet-layer-percentage', rightSlidePersentage + "%" );
+        bulletsGroup.style.setProperty('--left-bullet-layer-percentage', leftBulletShadowPosition + "%" );
+        bulletsGroup.style.setProperty('--right-bullet-layer-percentage', rightBulletShadowPosition + "%" );
         
         // finding bullets relative to slides that are being scrolled
         let slides = this.$slidesWindow.querySelectorAll(".slide");
@@ -109,12 +109,23 @@ Slider.prototype.scrollBulletShadow = function() {
         bullets.forEach( bullet => {
             bullet.classList.remove("from", "to", "active");
         });
-        // applying classes to active bullets
-        bullets[ bulletIndexFrom ].classList.add("from", "active");
-        bullets[ bulletIndexTo ].classList.add("to", "active");
+        // applying classes to bullets
+        let leftBullet = bullets[ bulletIndexFrom ];
+        let rightBullet = bullets[ bulletIndexTo ];
+        leftBullet.classList.add("from");
+        rightBullet.classList.add("to");
     
-        // when animation is ended remove active class from the second bullet
-        rightSlidePersentage === -100 && bullets[ bulletIndexTo ].classList.remove("active");
+        // updating active state
+        if ( leftBulletShadowPosition === 0 ) {
+            leftBullet.classList.add("active");
+        } else
+        if ( rightBulletShadowPosition === 0 ) {
+            rightBullet.classList.add("active");
+        } else {
+            leftBullet.classList.add("active");
+            rightBullet.classList.add("active");
+        }
+
     } catch(e) {
         displayErrorOnThePage && displayErrorOnThePage(e);
     }

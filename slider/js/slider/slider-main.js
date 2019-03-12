@@ -14,12 +14,16 @@ class Slider {
     }
 
     init() {
-        this.applyInitialStyles();
-        this.initSliderResize();
-        this.initArrows();
-        this.initDragDrop();
-        this.initBullets();
-        console.log("Slider was initialized");
+        try {
+            this.applyInitialStyles();
+            this.initSliderResize();
+            this.initArrows();
+            this.initDragDrop();
+            this.initBullets();
+            console.log("Slider was initialized");
+        } catch(e) {
+            displayErrorOnThePage && displayErrorOnThePage(e);
+        }
     };
 
     applyInitialStyles() {

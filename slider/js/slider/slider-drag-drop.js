@@ -40,7 +40,6 @@ Slider.prototype.dropSlide = function(e) {
             this.focusOnCurrSlide();
         };
     
-    
         // disable arrow when draggin --> bug !!!!!!!!
         // this.$slider.querySelectorAll(".arrow").forEach( arrow => arrow.classList.remove("hide") );
         let clientX = e.clientX || this.lastDragPosition;
@@ -53,7 +52,6 @@ Slider.prototype.dropSlide = function(e) {
             let direction = dragLength > 0 ? 1 : (-1); 
             let newSlideChildIndex = this.slideStartDrag + direction;
             this.focusOnSlide( newSlideChildIndex );
-    
         } else {
             this.focusOnCurrSlide();
         }

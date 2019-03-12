@@ -20,7 +20,11 @@
     );
     opacity: 0.25;
     top: 0;
-    /* transition: opacity .6s; */
+    transition: opacity .6s;
+}
+
+.arrow.desktop {
+    transition: none; /* getting rid of blinking on hover start */
 }
 /* right arrow  */
 .arrow:last-child{
@@ -74,11 +78,11 @@
     right: 0;
 }
 
-.arrow:hover {
+.arrow.desktop:hover {
     opacity: 1;
 }
 
-.arrow.right:hover {
+.arrow.desktop.right:hover {
     background: linear-gradient( 
         to right,
         rgba(0,0,0,0) 0%, 
@@ -87,7 +91,7 @@
     );
 }
 
-.arrow.left:hover {
+.arrow.desktop.left:hover {
     background: linear-gradient( 
         to left,
         rgba(0,0,0,0) 0%, 
@@ -95,15 +99,21 @@
         rgba(0,0,0,1) 100% 
     );
 }
-.arrow:hover button {
+.arrow.desktop:hover button {
     border-color: rgba(255, 255, 255, var( --mouse-close-to-arrow, 0.5 ));
 }
 
-
-/* touch events */
-.arrow.touch {
-    transition: 0.1s ease;
+.arrow.touch
+{
+    transition: 0.1s;
     opacity: 1;
 }
+
+/* .arrow:active
+{
+    transition: 0.1s;
+    opacity: 1;
+} */
+
 
 
