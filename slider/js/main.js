@@ -3,8 +3,24 @@ document.addEventListener("DOMContentLoaded", (e) => {
     slider.init(); 
 });
 
+
+// #########################################
+// helper functions to debug on Iphone
+// #########################################
+
 function displayErrorOnThePage( error ) {
-    console.error(error);
-    let errorParagraph = "<p>" + error.message + "   ||   " + error.stack + "</p>";
-    document.getElementById("error-message").innerHTML += errorParagraph;
-}
+    console.error( error );
+    // let errorParagraph = "<p>" + error.message + "   ||   " + error.stack + "</p>";
+    // showParagraphOnThePage( errorParagraph );
+};
+
+function dbg( ...msg ) {
+    let p = "<p>" + msg.join(" ") + "</p>";
+    showParagraphOnThePage( p );
+};
+
+function showParagraphOnThePage( p ) {
+    let errorElement = document.getElementById("error-message");
+    errorElement.innerHTML = p + errorElement.innerHTML;
+};
+

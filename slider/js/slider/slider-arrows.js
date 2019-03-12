@@ -1,13 +1,35 @@
 Slider.prototype.initArrows = function() {
     try {
         this.createArrows();
-        this.bindArrowsClick();
-        this.bindArrowsTouch();
-        this.bindArrowsStyleAnimationOnHover();
+        if ( this.isMobileUser() ) {
+            this.bindArrowsTouch();
+        } else {
+            this.bindArrowsClick();
+            this.applyDesktopStylesToArrows();
+            this.bindArrowsStyleAnimationOnHover();
+        }
     } catch(e) {
         displayErrorOnThePage && displayErrorOnThePage(e);
     }
 };
+
+Slider.prototype.applyDesktopStylesToArrows = function() {
+    // preventing style bugs on Iphone so that "hover" state
+    // isn't being activated on touch
+    this.arrows.wraps.forEach( wrap => {
+        wrap.classList.add("desktop");
+    });
+}
+
+Slider.prototype.isMobileUser = function() {
+    try {
+        let usesMobile = window.navigator.userAgent.match(/Mobile/) ? true : false;
+        console.log({usesMobile});
+        return usesMobile;
+    } catch(e) {
+        displayErrorOnThePage && displayErrorOnThePage(e);
+    }
+}
 
 Slider.prototype.createArrows = function() {
     let arrowLeftWrap = this.createEl("arrow left");
@@ -39,17 +61,20 @@ Slider.prototype.bindArrowsClick = function () {
 };
 
 Slider.prototype.bindArrowsTouch = function () {
-    this.arrows.wraps.forEach( (arrowWrap,i) => {
-        arrowWrap.addEventListener("touchstart", e => {
-            e.preventDefault(); // preventing mouse events from firing
+    this.arrows.wraps.forEach( (arrowWrap, i) => {
+        arrowWrap.addEventListener("touchstart", () => {
             arrowWrap.classList.add("touch")
-    
         });
         arrowWrap.addEventListener("touchend", () => {
-            arrowWrap.classList.remove("touch");
-            let slideDirection = i === 0 ? -1 : 1;
-            let nextSlideIndex = this.findCurrSlideChildIndex() + slideDirection;
-            this.focusOnSlide( nextSlideIndex );
+            try {
+                arrowWrap.classList.remove("touch");
+                let slideDirection = i === 0 ? -1 : 1;
+                let nextSlideIndex = this.findCurrSlideChildIndex() + slideDirection;
+                this.focusOnSlide( nextSlideIndex );
+            } catch(e) {
+                displayErrorOnThePage && displayErrorOnThePage(e);
+            }
+
         });
     })
 };
@@ -60,8 +85,11 @@ Slider.prototype.bindArrowsStyleAnimationOnHover = function() {
     let root = document.documentElement;
     this.arrows.wraps.forEach( arrowWrap => {
         arrowWrap.addEventListener('mousemove', e => {
-            let mouseToArrowCloseness = this.findMouseToArrowCloseness(e);
-            root.style.setProperty('--mouse-close-to-arrow', mouseToArrowCloseness);
+            // if (!this.arrowWasTouched) {
+                let mouseToArrowCloseness = this.findMouseToArrowCloseness(e);
+                root.style.setProperty('--mouse-close-to-arrow', mouseToArrowCloseness);
+
+            // }
         });
     });
 };

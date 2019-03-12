@@ -30,53 +30,52 @@ Slider.prototype.focusOnCurrSlide = function() {
     this.focusOnSlide( this.findCurrSlideChildIndex() );
 };
 
-Slider.prototype.focusOnSlide = function( childIndex ) {
+Slider.prototype.focusOnSlide = function( childIndexOrSlide ) {
     try {
-        if ( this.sliderIsScrolling ) { console.warn("still scrolling"); return; }
+        if ( this.sliderIsScrolling ) return console.warn("still scrolling"); 
     
+        let childIndex = typeof childIndexOrSlide === "number" ? 
+                                childIndexOrSlide :
+                                this.findSlideChildIndex( childIndexOrSlide );
+
         if ( childIndex < 0 || childIndex >= this.$slides.length ) {
             // getting updated child index ( 0 or the last one )
             childIndex = childIndex < 0 ? 0 : this.$slides.length - 1;
             // appending fist slide or prepending last slide to make infinite slider
             this.reorganizeSlides();
         } 
-        let slide = this.$slideGroup.children[ childIndex ];
-        slide.scrollIntoView({behavior: "smooth"});
-        
-        // ### checking scrolling state to prevent user from scrolling to the next slide before
-        // ### current animation finishes
-        // --- instead of implementing my own scroll, I've decided it will be easier
-        // --- and more readable to reuse scrollIntoView with updating the state on the go
-        // if interval time is lower than 30, it updates too quickly and "updateSliderIsScrollingState" might not work correctly
-        let intervalId = setInterval( () => this.updateSliderIsScrollingState( intervalId ), 30 );
+        this.scrollToSlideChildIndex( childIndex );
     } catch(e) {
         displayErrorOnThePage && displayErrorOnThePage(e);
     }
 };
 
-Slider.prototype.updateSliderIsScrollingState = function( intervalId ) {
-    try {
-        switch ( this.lastSliderPosition ) {
-            case undefined:
-            case null:
-                this.sliderIsScrolling = true;
-                // set initial slider position on scrolling animation start
-                this.lastSliderPosition = this.$slidesWindow.scrollLeft;
-                break;
-    
-            // current position equal to previous recorded position => stopped scrolling
-            case this.$slidesWindow.scrollLeft: 
-                this.sliderIsScrolling = false;
-                clearInterval( intervalId );
-                this.lastSliderPosition = null; // reset last slider position
-                break;
-            default: // keep recording position
-                this.lastSliderPosition = this.$slidesWindow.scrollLeft;
-        }
-    } catch(e) {
-        displayErrorOnThePage && displayErrorOnThePage(e);
+Slider.prototype.scrollToSlideChildIndex = function( childIndex ) {
+    let step = 20;
+    let slidePositionLeft = childIndex * this.sliderRect.width;
+    let intervalId = setInterval( () => this.stepScrollSlide( slidePositionLeft, intervalId, step), 10 );
+}
+
+Slider.prototype.stepScrollSlide = function( slidePositionLeft, intervalId, step=20 ) {
+    let currPosition = this.$slidesWindow.scrollLeft;
+    let positionDiff = slidePositionLeft - currPosition;
+    let direction = positionDiff > 0 ? 1 : -1;
+    if ( Math.abs( positionDiff ) < step ) {
+        this.$slidesWindow.scrollLeft = slidePositionLeft;
+        clearInterval( intervalId );
+        this.sliderIsScrolling = false;
+    } else {
+        this.$slidesWindow.scrollLeft += ( direction * step );
+        // ### checking scrolling state to prevent user from scrolling to the next slide before
+        this.sliderIsScrolling = true;
     }
 };
+
+Slider.prototype.findSlideChildIndex = function(slide) {
+    let childrenArray = [ ...this.$slideGroup.children];
+    let childIndex = childrenArray.findIndex( x => x === slide );
+    return childIndex;
+}
 
 Slider.prototype.reorganizeSlides = function() {
     try {

@@ -19,7 +19,8 @@ Slider.prototype.startDragSlide = function(e) {
             this.reorganizeSlides();
             this.slideStartDrag = this.findCurrSlideChildIndex();
             // save drag start position to determine the length of a drag
-            this.dragStartPosition = this.lastDragPosition = e.clientX || e.touches[0].clientX; 
+            this.dragStartPosition = e.clientX || e.touches[0].clientX; 
+            this.lastDragPosition = this.dragStartPosition;
             e.target.classList.replace("grab", "grabbing");
         } else { 
             console.warn( "scrolling slide is still being animated"); 
@@ -39,7 +40,6 @@ Slider.prototype.dropSlide = function(e) {
             this.focusOnCurrSlide();
         };
     
-    
         // disable arrow when draggin --> bug !!!!!!!!
         // this.$slider.querySelectorAll(".arrow").forEach( arrow => arrow.classList.remove("hide") );
         let clientX = e.clientX || this.lastDragPosition;
@@ -52,7 +52,6 @@ Slider.prototype.dropSlide = function(e) {
             let direction = dragLength > 0 ? 1 : (-1); 
             let newSlideChildIndex = this.slideStartDrag + direction;
             this.focusOnSlide( newSlideChildIndex );
-    
         } else {
             this.focusOnCurrSlide();
         }
