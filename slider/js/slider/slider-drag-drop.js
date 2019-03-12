@@ -19,7 +19,8 @@ Slider.prototype.startDragSlide = function(e) {
             this.reorganizeSlides();
             this.slideStartDrag = this.findCurrSlideChildIndex();
             // save drag start position to determine the length of a drag
-            this.dragStartPosition = this.lastDragPosition = e.clientX || e.touches[0].clientX; 
+            this.dragStartPosition = e.clientX || e.touches[0].clientX; 
+            this.lastDragPosition = this.dragStartPosition;
             e.target.classList.replace("grab", "grabbing");
         } else { 
             console.warn( "scrolling slide is still being animated"); 
